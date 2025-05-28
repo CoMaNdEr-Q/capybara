@@ -53,43 +53,6 @@ int main() {
     set<int> activeTowers;
     int eventIdx = 0;
     
-    // For each tower, we need to find the maximum number of towers
-    // that are active at any point in its range
-    for (int i = 0; i < n; i++) {
-        Tower& currentTower = towers[i];
-        long long rangeStart = currentTower.left;
-        long long rangeEnd = currentTower.right;
-        
-        // Reset for this tower's calculation
-        activeTowers.clear();
-        eventIdx = 0;
-        
-        int maxOverlapInRange = 0;
-        
-        // Process all events up to and including this tower's range
-        while (eventIdx < events.size() && events[eventIdx].coord <= rangeEnd + 1) {
-            Event& e = events[eventIdx];
-            
-            if (e.coord > rangeEnd + 1) break;
-            
-            if (e.type == 1) {
-                activeTowers.insert(e.towerIdx);
-            } else {
-                activeTowers.erase(e.towerIdx);
-            }
-            
-            // If we're within the current tower's range, check overlap
-            if (e.coord >= rangeStart && e.coord <= rangeEnd) {
-                maxOverlapInRange = max(maxOverlapInRange, (int)activeTowers.size());
-            }
-            
-            eventIdx++;
-        }
-        
-        currentTower.maxOverlap = max(1, maxOverlapInRange);
-    }
-    
-    // Alternative approach: For each tower, check how many other towers overlap with it
     for (int i = 0; i < n; i++) {
         int overlapCount = 1; // Count itself
         
